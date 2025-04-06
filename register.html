@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 30px;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            text-align: left;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border-color 0.3s ease;
+        }
+        input:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        .password-container {
+            position: relative;
+        }
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+        }
+        button {
+            background-color: #667eea;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background-color: #5563c1;
+        }
+        .toggle {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .toggle a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .toggle a:hover {
+            text-decoration: underline;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+            text-align: left;
+            margin-bottom: 10px;
+        }
+    </style>
+    <script>
+        function register(event) {
+            event.preventDefault();
+            
+            let username = document.getElementById("new-username").value.trim();
+            let email = document.getElementById("email").value.trim();
+            let password = document.getElementById("new-password").value.trim();
+            let errorMsg = document.getElementById("error-message");
+
+            // Check if any field is empty
+                if (!username || !email || !password) {
+                    errorMsg.textContent = "Please fill in all the required fields.";
+                    return;
+                }
+
+                // Check email format
+                if (!validateEmail(email)) {
+                    errorMsg.textContent = "Invalid email format.";
+                    return;
+                }
+
+                // Check password length (at least 6 characters)
+                if (password.length < 2) {
+                    errorMsg.textContent = "Password must be at least 2 characters long.";
+                    return;
+                }
+
+
+// Save registration information to localStorage
+                localStorage.setItem("username", username);
+                localStorage.setItem("email", email);
+                localStorage.setItem("password", password);
+
+                alert("Registration successful! You can log in now.");
+                window.location.href = "index.html";
+
+                function validateEmail(email) {
+                    let re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    return re.test(email);
+                }
+
+                function togglePassword() {
+                    let passwordInput = document.getElementById("new-password");
+                    let toggleIcon = document.getElementById("toggle-icon");
+
+                    if (passwordInput.type === "password") {
+                        passwordInput.type = "text";
+                        toggleIcon.textContent = "🙈"; // Eye-open symbol
+                    } else {
+                        passwordInput.type = "password";
+                        toggleIcon.textContent = "👁"; // Eye-close symbol
+                    }
+                }
+
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Register</h1>
+        <form onsubmit="register(event)">
+            <label for="new-username">Username:</label>
+            <input type="text" name="new-username" id="new-username" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+            
+            <label for="new-password">Password:</label>
+            <div class="password-container">
+                <input type="password" name="new-password" id="new-password" required>
+                <span id="toggle-icon" class="toggle-password" onclick="togglePassword()">👁</span>
+            </div>
+            
+            <div id="error-message" class="error"></div>
+            
+            <button type="submit">Register</button>
+        </form>
+        <div class="toggle">
+            <span>Already have an account? </span>
+            <a href="index.html">Login</a>
+        </div>
+    </div>
+</body>
+</html>
